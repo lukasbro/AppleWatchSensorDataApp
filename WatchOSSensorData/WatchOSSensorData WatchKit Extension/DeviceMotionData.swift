@@ -17,7 +17,9 @@ class DeviceMotionData {
     var frequency           = 0.2     //max. 100Hz - current: 5 Hz
     var postDataFrequency   = 0.0
     var dataCounter         = 0.0
-    var stopToggle          = 0
+    var previousAccelX      = 0.0
+    var previousAccelY      = 0.0
+    var previousAccelZ      = 0.0
     var motionArray : [MotionCodable] = []
     
     func startMotionTracking(timeInSeconds: Double)
@@ -41,13 +43,12 @@ class DeviceMotionData {
                     if (Date().timeIntervalSince1970 >= self.initialTime + self.timer)
                     {
                         self.stopMotionTracking()
-                        //self.dataCounter-=1.0
                         print("Time (", String((self.dataCounter)/self.postDataFrequency), "sec ) is up!")
                     }
                     
                     //set label text in UI
                     if let accessUI = WKExtension.shared().rootInterfaceController as? InterfaceController {
-                        accessUI.upperLabel.setText("Seconds collected: ")
+                        accessUI.upperLabel.setText("Seconds active: ")
                         accessUI.lowerLabel.setText(String(self.dataCounter/self.postDataFrequency))
                     }
                     
@@ -60,12 +61,34 @@ class DeviceMotionData {
                     df.dateFormat = "y-MM-dd H:mm:ss-SS"
                     let currentDate = df.string(from: d)
                     
+                    //remove noise, smooth acceleration data by low-pass filtering
+                    let newAccelX = data!.userAcceleration.x
+                    let newAccelY = data!.userAcceleration.y
+                    let newAccelZ = data!.userAcceleration.z
+                    
+                    let outputAccelX = self.frequency * newAccelX + (1.0-self.frequency) * self.previousAccelX
+                    let outputAccelY = self.frequency * newAccelY + (1.0-self.frequency) * self.previousAccelY
+                    let outputAccelZ = self.frequency * newAccelZ + (1.0-self.frequency) * self.previousAccelZ
+                    
+                    self.previousAccelX = outputAccelX
+                    self.previousAccelY = outputAccelY
+                    self.previousAccelZ = outputAccelZ
+                    
+                    //elimante redundant data - threshold PROBLEM
+//                    if (outputAccelX < 0.5) {
+//                        outputAccelX = 0.0
+//                    } else if (outputAccelY < 0.5) {
+//                        outputAccelY = 0.0
+//                    } else if (outputAccelZ < 0.5) {
+//                        outputAccelZ = 0.0
+//                    }
+                    
                     //append current motion data to array
                     self.motionArray.append(MotionCodable(
                                                 timeStamp: currentDate,
-                                                xAccelUser: data!.userAcceleration.x,
-                                                yAccelUser: data!.userAcceleration.y,
-                                                zAccelUser: data!.userAcceleration.z,
+                                                xAccelUser: outputAccelX,
+                                                yAccelUser: outputAccelY,
+                                                zAccelUser: outputAccelZ,
                                                 xGravity: data!.gravity.x,
                                                 yGravity: data!.gravity.y,
                                                 zGravity: data!.gravity.z,
@@ -90,7 +113,9 @@ class DeviceMotionData {
             }
             //start delivery of DeviceMotion data
             motionManager.startDeviceMotionUpdates(to: OperationQueue.current!, withHandler: handler)
-        } else {
+        }
+        else
+        {
             //if CMMotionManager is not available
             print("CMMotionManager not available")
         }
@@ -103,12 +128,13 @@ class DeviceMotionData {
         let data = try! encoder.encode(self.motionArray)
         print(String(data: data, encoding: .utf8)!)
     }
-    
+
     
     func stopMotionTracking () {
         if (motionManager.isDeviceMotionActive)
         {
             motionManager.stopDeviceMotionUpdates()
+            //PROBLEM Abhängigkeit der heart rate von device motion!
             HeartRateData().stopHeartRateUpdates()
             if let accessUI = WKExtension.shared().rootInterfaceController as? InterfaceController {
                 accessUI.isTrackingActive = false

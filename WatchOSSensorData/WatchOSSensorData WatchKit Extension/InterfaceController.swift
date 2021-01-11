@@ -11,11 +11,10 @@ import Foundation
 
 class InterfaceController: WKInterfaceController {
 
-    @IBOutlet weak var upperLabel: WKInterfaceLabel!
-    @IBOutlet weak var lowerLabel: WKInterfaceLabel!
-    @IBOutlet weak var startButton: WKInterfaceButton!
-    @IBOutlet weak var stopButton: WKInterfaceButton!
-    
+    @IBOutlet weak var upperLabel   : WKInterfaceLabel!
+    @IBOutlet weak var lowerLabel   : WKInterfaceLabel!
+    @IBOutlet weak var startButton  : WKInterfaceButton!
+    @IBOutlet weak var stopButton   : WKInterfaceButton!
     var isTrackingActive = false
     
     
@@ -32,6 +31,13 @@ class InterfaceController: WKInterfaceController {
     }
     
     
+    func startTracking (timeInSeconds: Double){
+        let timer = timeInSeconds
+        DeviceMotionData().startMotionTracking(timeInSeconds: timer)
+        HeartRateData().startHeartRateTracking(timeInSeconds: timer)
+        //expandable
+    }
+    
     
     @IBAction func startTrackingButtonPressed() {
         //start tracking
@@ -46,11 +52,5 @@ class InterfaceController: WKInterfaceController {
         if (isTrackingActive == true) {
             DeviceMotionData().stopMotionTrackingManually()
         }
-    }
-    
-    func startTracking (timeInSeconds: Double){
-        let timer = timeInSeconds
-        DeviceMotionData().startMotionTracking(timeInSeconds: timer)
-        HeartRateData().startHeartRateTracking(timeInSeconds: timer)
     }
 }

@@ -13,7 +13,6 @@ class HeartRateData {
     
     let healthStore = HKHealthStore()
     var dataCounter = 0.0
-    var stopToggle  = false
     var heartRateArray : [BPMCodable] = []
     
 
@@ -40,9 +39,7 @@ class HeartRateData {
      * HKObserverQuery to get updates
      */
     func fetchHeartRate() {
-        
-        stopToggle = false
-        
+                
         //create sample type for heart rate
         guard let heartRateType = HKObjectType.quantityType(forIdentifier: .heartRate) else {
             print("SampleType ERROR")
@@ -68,7 +65,7 @@ class HeartRateData {
                 let beatsPerMinute = HKUnit(from: "count/min")
                 
                 DispatchQueue.main.async {
-
+                    
                     //count collected data
                     self.dataCounter+=1
                         
@@ -143,8 +140,8 @@ class HeartRateData {
     }
     
     func stopHeartRateUpdates () {
+        //PROBLEM WIE STOPPT MAN QUERY / QUEUE
         //aktuell noch abhängig von DeviceMotion
-        stopToggle = true
         print("Stoppe Heart Rate")
     }
     
