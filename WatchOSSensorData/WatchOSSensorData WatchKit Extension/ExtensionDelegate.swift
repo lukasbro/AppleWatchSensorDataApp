@@ -7,16 +7,43 @@
 
 import WatchKit
 
-class ExtensionDelegate: NSObject, WKExtensionDelegate {
+class ExtensionDelegate: NSObject, WKExtensionDelegate, WKExtendedRuntimeSessionDelegate {
     
+    let session         = WKExtendedRuntimeSession()
+    var isSessionActive = false
     
+    func applicationDidBecomeActive() {
+        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        if (isSessionActive == false) {
+            startExtRunSession()
+        }
+    }
+    
+    func startExtRunSession(){
+        //start Extended Runtime Session
+        isSessionActive = true
+        session.delegate = self
+        session.start()
+    }
+
+    
+    // MARK:- Extended Runtime Session Delegate Methods
+    func extendedRuntimeSessionDidStart(_ extendedRuntimeSession: WKExtendedRuntimeSession) {
+        // Track when your session starts.
+    }
+
+
+    func extendedRuntimeSessionWillExpire(_ extendedRuntimeSession: WKExtendedRuntimeSession) {
+        // Finish and clean up any tasks before the session ends.
+    }
+        
+    func extendedRuntimeSession(_ extendedRuntimeSession: WKExtendedRuntimeSession, didInvalidateWith reason: WKExtendedRuntimeSessionInvalidationReason, error: Error?) {
+        // Track when your session ends.
+        // Also handle errors here.
+    }
 
     func applicationDidFinishLaunching() {
         // Perform any final initialization of your application.
-    }
-
-    func applicationDidBecomeActive() {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
 
     func applicationWillResignActive() {

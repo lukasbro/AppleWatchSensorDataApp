@@ -13,8 +13,16 @@
                     <items>
                         <label width="136" alignment="left" text="Welcome." textAlignment="left" id="bdH-wy-i00"/>
                         <label width="136" alignment="left" text="Let's track!" textAlignment="left" id="ZJj-dq-Gpn"/>
-                        <button width="1" alignment="left" title="Start" id="pvY-ig-BxF"/>
-                        <button width="1" alignment="left" title="Stop" id="DWu-Q5-cti"/>
+                        <button width="1" alignment="left" title="Start" id="pvY-ig-BxF">
+                            <connections>
+                                <action selector="startTrackingButtonPressed" destination="AgC-eL-Hgc" id="e0E-sz-ou4"/>
+                            </connections>
+                        </button>
+                        <button width="1" alignment="left" title="Stop" id="DWu-Q5-cti">
+                            <connections>
+                                <action selector="stopTrackingButtonPressed" destination="AgC-eL-Hgc" id="yMi-cl-aOR"/>
+                            </connections>
+                        </button>
                     </items>
                     <connections>
                         <outlet property="lowerLabel" destination="ZJj-dq-Gpn" id="Enl-1o-5wf"/>

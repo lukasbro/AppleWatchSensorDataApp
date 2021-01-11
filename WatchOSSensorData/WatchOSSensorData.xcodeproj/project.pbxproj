@@ -16,6 +16,11 @@
 		D58BAFC425AB769400E5F1AD /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58BAFC325AB769400E5F1AD /* NotificationController.swift */; };
 		D58BAFC625AB769400E5F1AD /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58BAFC525AB769400E5F1AD /* ComplicationController.swift */; };
 		D58BAFC825AB769500E5F1AD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D58BAFC725AB769500E5F1AD /* Assets.xcassets */; };
+		D58BAFDF25AB8C1B00E5F1AD /* DeviceMotionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58BAFDE25AB8C1B00E5F1AD /* DeviceMotionData.swift */; };
+		D58BAFEC25AB958F00E5F1AD /* MotionCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58BAFEB25AB958F00E5F1AD /* MotionCodable.swift */; };
+		D58BAFFD25ABB7BB00E5F1AD /* HeartRateData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58BAFFC25ABB7BB00E5F1AD /* HeartRateData.swift */; };
+		D58BB00425ABC98500E5F1AD /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D58BB00325ABC98500E5F1AD /* HealthKit.framework */; };
+		D5A22BDD25ABD4EB005316FB /* BPMCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A22BDC25ABD4EB005316FB /* BPMCodable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +79,12 @@
 		D58BAFC725AB769500E5F1AD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D58BAFC925AB769500E5F1AD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D58BAFCA25AB769500E5F1AD /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		D58BAFDE25AB8C1B00E5F1AD /* DeviceMotionData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceMotionData.swift; sourceTree = "<group>"; };
+		D58BAFEB25AB958F00E5F1AD /* MotionCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionCodable.swift; sourceTree = "<group>"; };
+		D58BAFFC25ABB7BB00E5F1AD /* HeartRateData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartRateData.swift; sourceTree = "<group>"; };
+		D58BB00125ABC98500E5F1AD /* WatchOSSensorData WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "WatchOSSensorData WatchKit Extension.entitlements"; sourceTree = "<group>"; };
+		D58BB00325ABC98500E5F1AD /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS7.1.sdk/System/Library/Frameworks/HealthKit.framework; sourceTree = DEVELOPER_DIR; };
+		D5A22BDC25ABD4EB005316FB /* BPMCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPMCodable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +92,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D58BB00425ABC98500E5F1AD /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,6 +105,7 @@
 				D58BAFAF25AB769300E5F1AD /* WatchOSSensorData WatchKit App */,
 				D58BAFBE25AB769400E5F1AD /* WatchOSSensorData WatchKit Extension */,
 				D58BAFA825AB769300E5F1AD /* Products */,
+				D58BB00225ABC98500E5F1AD /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -121,13 +134,26 @@
 			children = (
 				D58BAFBF25AB769400E5F1AD /* InterfaceController.swift */,
 				D58BAFC125AB769400E5F1AD /* ExtensionDelegate.swift */,
+				D58BAFDE25AB8C1B00E5F1AD /* DeviceMotionData.swift */,
+				D58BAFFC25ABB7BB00E5F1AD /* HeartRateData.swift */,
+				D58BAFEB25AB958F00E5F1AD /* MotionCodable.swift */,
+				D5A22BDC25ABD4EB005316FB /* BPMCodable.swift */,
+				D58BAFC725AB769500E5F1AD /* Assets.xcassets */,
+				D58BB00125ABC98500E5F1AD /* WatchOSSensorData WatchKit Extension.entitlements */,
+				D58BAFC925AB769500E5F1AD /* Info.plist */,
 				D58BAFC325AB769400E5F1AD /* NotificationController.swift */,
 				D58BAFC525AB769400E5F1AD /* ComplicationController.swift */,
-				D58BAFC725AB769500E5F1AD /* Assets.xcassets */,
-				D58BAFC925AB769500E5F1AD /* Info.plist */,
 				D58BAFCA25AB769500E5F1AD /* PushNotificationPayload.apns */,
 			);
 			path = "WatchOSSensorData WatchKit Extension";
+			sourceTree = "<group>";
+		};
+		D58BB00225ABC98500E5F1AD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D58BB00325ABC98500E5F1AD /* HealthKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -258,6 +284,10 @@
 			files = (
 				D58BAFC425AB769400E5F1AD /* NotificationController.swift in Sources */,
 				D58BAFC625AB769400E5F1AD /* ComplicationController.swift in Sources */,
+				D58BAFEC25AB958F00E5F1AD /* MotionCodable.swift in Sources */,
+				D58BAFFD25ABB7BB00E5F1AD /* HeartRateData.swift in Sources */,
+				D5A22BDD25ABD4EB005316FB /* BPMCodable.swift in Sources */,
+				D58BAFDF25AB8C1B00E5F1AD /* DeviceMotionData.swift in Sources */,
 				D58BAFC225AB769400E5F1AD /* ExtensionDelegate.swift in Sources */,
 				D58BAFC025AB769400E5F1AD /* InterfaceController.swift in Sources */,
 			);
@@ -408,6 +438,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_ENTITLEMENTS = "WatchOSSensorData WatchKit Extension/WatchOSSensorData WatchKit Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SQVN8UK5CA;
 				INFOPLIST_FILE = "WatchOSSensorData WatchKit Extension/Info.plist";
@@ -430,6 +461,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_ENTITLEMENTS = "WatchOSSensorData WatchKit Extension/WatchOSSensorData WatchKit Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SQVN8UK5CA;
 				INFOPLIST_FILE = "WatchOSSensorData WatchKit Extension/Info.plist";

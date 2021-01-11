@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSHealthClinicalHealthRecordsShareUsageDescription</key>
+	<string>Accessing Health Data</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>Accessing Health Data</string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>Accessing Health Data</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -32,6 +38,12 @@
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.watchkit</string>
 	</dict>
+	<key>UIBackgroundModes</key>
+	<array/>
+	<key>WKBackgroundModes</key>
+	<array>
+		<string>physical-therapy</string>
+	</array>
 	<key>WKExtensionDelegateClassName</key>
 	<string>$(PRODUCT_MODULE_NAME).ExtensionDelegate</string>
 	<key>WKWatchOnly</key>

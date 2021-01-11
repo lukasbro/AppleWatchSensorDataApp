@@ -16,6 +16,9 @@ class InterfaceController: WKInterfaceController {
     @IBOutlet weak var startButton: WKInterfaceButton!
     @IBOutlet weak var stopButton: WKInterfaceButton!
     
+    var isTrackingActive = false
+    
+    
     override func awake(withContext context: Any?) {
         // Configure interface objects here.
     }
@@ -27,5 +30,27 @@ class InterfaceController: WKInterfaceController {
     override func didDeactivate() {
         // This method is called when watch view controller is no longer visible
     }
-
+    
+    
+    
+    @IBAction func startTrackingButtonPressed() {
+        //start tracking
+        if (isTrackingActive == false) {
+            isTrackingActive = true
+            startTracking(timeInSeconds: 5)
+        }
+    }
+ 
+    @IBAction func stopTrackingButtonPressed() {
+        //stop tracking
+        if (isTrackingActive == true) {
+            DeviceMotionData().stopMotionTrackingManually()
+        }
+    }
+    
+    func startTracking (timeInSeconds: Double){
+        let timer = timeInSeconds
+        DeviceMotionData().startMotionTracking(timeInSeconds: timer)
+        HeartRateData().startHeartRateTracking(timeInSeconds: timer)
+    }
 }
