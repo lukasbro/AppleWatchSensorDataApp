@@ -9,27 +9,37 @@ import WatchKit
 
 class ExtensionDelegate: NSObject, WKExtensionDelegate, WKExtendedRuntimeSessionDelegate {
     
-    let session         = WKExtendedRuntimeSession()
+    var session : WKExtendedRuntimeSession!
     var isSessionActive = false
+    
     
     func applicationDidBecomeActive() {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        if (isSessionActive == false) {
-            startExtRunSession()
-        }
     }
     
     func startExtRunSession(){
-        //start Extended Runtime Session
-        isSessionActive = true
-        session.delegate = self
-        session.start()
+        if (isSessionActive == false) {
+            //start Extended Runtime Session
+            isSessionActive = true
+            session = WKExtendedRuntimeSession()
+            session.delegate = self
+            session.start()
+        }
+    }
+    
+    func stopExtRunSession(){
+        if (isSessionActive == true){
+            //stop Extended Runtime Session
+            session.invalidate()
+            print("Session stopped!")
+            isSessionActive = false
+        }
     }
 
-    
     // MARK:- Extended Runtime Session Delegate Methods
     func extendedRuntimeSessionDidStart(_ extendedRuntimeSession: WKExtendedRuntimeSession) {
         // Track when your session starts.
+        //print("Start: ", session.state)
     }
 
 
@@ -40,6 +50,7 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WKExtendedRuntimeSession
     func extendedRuntimeSession(_ extendedRuntimeSession: WKExtendedRuntimeSession, didInvalidateWith reason: WKExtendedRuntimeSessionInvalidationReason, error: Error?) {
         // Track when your session ends.
         // Also handle errors here.
+        //print("End: ", session.state)
     }
 
     func applicationDidFinishLaunching() {
@@ -80,5 +91,4 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WKExtendedRuntimeSession
             }
         }
     }
-
 }

@@ -15,8 +15,46 @@ class InterfaceController: WKInterfaceController {
     @IBOutlet weak var lowerLabel   : WKInterfaceLabel!
     @IBOutlet weak var startButton  : WKInterfaceButton!
     @IBOutlet weak var stopButton   : WKInterfaceButton!
-    var isTrackingActive = false
+    var isTrackingActive    = false
+    let deviceMotionManager = DeviceMotionManager()
+    let healthManager       = HealthManager()
+    let extensionDelegate   = ExtensionDelegate()
     
+    
+    func startTracking(timeInSeconds: Double = 5, frequency: Double = 1.0/32.0, sensorType: String = "deviceMotion") {
+        
+        //start tracking of sensor type
+        switch sensorType {
+        case "deviceMotion":
+            deviceMotionManager.startMotionTracking(timeInSeconds: timeInSeconds, frequency: frequency)
+        case "heartRate":
+            healthManager.startHeartRateTracking(timeInSeconds: timeInSeconds)
+        case "oxygenSaturation":
+            healthManager.fetchOxygenSaturationData()
+        case "ecg":
+            healthManager.fetchEcgData()
+        default:
+            print("default")
+        }
+    }
+    
+    @IBAction func startTrackingButtonPressed() {
+        //start tracking
+        if (isTrackingActive == false) {
+            isTrackingActive = true
+            extensionDelegate.startExtRunSession()
+            startTracking(timeInSeconds: 5, frequency: 1.0/32.0, sensorType: "deviceMotion")
+            //startTracking(timeInSeconds: 5, sensorType: "heartRate")
+        }
+    }
+ 
+    @IBAction func stopTrackingButtonPressed() {
+        //stop tracking
+        if (isTrackingActive == true) {
+            deviceMotionManager.stopMotionTrackingManually()
+            extensionDelegate.stopExtRunSession()
+        }
+    }
     
     override func awake(withContext context: Any?) {
         // Configure interface objects here.
@@ -28,29 +66,5 @@ class InterfaceController: WKInterfaceController {
     
     override func didDeactivate() {
         // This method is called when watch view controller is no longer visible
-    }
-    
-    
-    func startTracking (timeInSeconds: Double){
-        let timer = timeInSeconds
-        DeviceMotionData().startMotionTracking(timeInSeconds: timer)
-        HeartRateData().startHeartRateTracking(timeInSeconds: timer)
-        //expandable
-    }
-    
-    
-    @IBAction func startTrackingButtonPressed() {
-        //start tracking
-        if (isTrackingActive == false) {
-            isTrackingActive = true
-            startTracking(timeInSeconds: 5)
-        }
-    }
- 
-    @IBAction func stopTrackingButtonPressed() {
-        //stop tracking
-        if (isTrackingActive == true) {
-            DeviceMotionData().stopMotionTrackingManually()
-        }
     }
 }
