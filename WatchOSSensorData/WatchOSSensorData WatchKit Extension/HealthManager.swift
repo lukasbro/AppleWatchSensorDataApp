@@ -157,8 +157,10 @@ class HealthManager {
     
     
     func stopHeartRateUpdates () {
-        
-        print("Stoppe Heart Rate")
+        if (isTrackingActive) {
+            //TODO: stop heartrate manually
+            print("Stoppe Heart Rate")
+        }
     }
     
     

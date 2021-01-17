@@ -145,7 +145,9 @@ class DeviceMotionManager {
     
     
     func stopMotionTrackingManually() {
-        stopMotionTracking()
-        print("Manually stopped!")
+        if (motionManager.isDeviceMotionActive) {
+            stopMotionTracking()
+            print("Manually stopped!")
+        }
     }
 }
