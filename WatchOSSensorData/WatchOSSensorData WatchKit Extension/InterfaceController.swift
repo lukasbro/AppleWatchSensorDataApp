@@ -21,7 +21,7 @@ class InterfaceController: WKInterfaceController {
     let extensionDelegate   = ExtensionDelegate()
     
     
-    func startTracking(timeInSeconds: Double = 5, frequency: Double = 1.0/32.0, sensorType: String = "deviceMotion") {
+    func startTracking(timeInSeconds: Double = 60, frequency: Double = 1.0/32.0, sensorType: String = "deviceMotion") {
         
         //start tracking of sensor type
         switch sensorType {
@@ -43,8 +43,8 @@ class InterfaceController: WKInterfaceController {
         if (isTrackingActive == false) {
             isTrackingActive = true
             extensionDelegate.startExtRunSession()
-            startTracking(timeInSeconds: 5, frequency: 1.0/32.0, sensorType: "deviceMotion")
-            //startTracking(timeInSeconds: 5, sensorType: "heartRate")
+            //startTracking(timeInSeconds: 5, frequency: 1.0/32.0, sensorType: "deviceMotion")
+            startTracking(timeInSeconds: 90, sensorType: "heartRate")
         }
     }
  
@@ -52,6 +52,10 @@ class InterfaceController: WKInterfaceController {
         //stop tracking
         if (isTrackingActive == true) {
             deviceMotionManager.stopMotionTrackingManually()
+            
+            //TODO: Stop HeartRate manually
+            healthManager.stopHeartRateUpdates()
+
             extensionDelegate.stopExtRunSession()
         }
     }

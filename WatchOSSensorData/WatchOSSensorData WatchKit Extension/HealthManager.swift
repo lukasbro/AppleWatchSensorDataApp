@@ -35,13 +35,14 @@ class HealthManager {
     let healthStore = HKHealthStore()
     var dataCounter = 0.0
     var heartRateArray : [HeartRateData] = []
+    var isTrackingActive = false
     
     
     /*
      * fetch most recent heart rate data updates
      * HKObserverQuery to get updates
      */
-    func startHeartRateTracking(timeInSeconds: Double) {
+    func startHeartRateTracking(timeInSeconds: Double = 60) {
         
         //check authorization and start
         if (authorizingHK() == true) {
@@ -52,9 +53,15 @@ class HealthManager {
                 return
             }
             
+            //set start and end of tracking
+            let startDate = Date()
+            let approxObserverTimeError = 3
+            let endDate = Calendar.current.date(byAdding: .second, value: Int(timeInSeconds)-approxObserverTimeError, to: startDate)
+            let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: HKQueryOptions.strictEndDate)
+            
             //create observer which notifies whenever new samples
             //of the specified type are saved to the store by HealthKit
-            let observerQuery = HKObserverQuery(sampleType: heartRateType, predicate: nil) { (query, completionHandler, errorOrNil) in
+            let observerQuery = HKObserverQuery(sampleType: heartRateType, predicate: predicate) { (query, completionHandler, errorOrNil) in
                 if (errorOrNil != nil) {
                     print("Observer ERROR")
                     return
@@ -116,10 +123,9 @@ class HealthManager {
             return
         }
         
-        //get most recent sample – new sample every ca. 5 secs
-        let predicate = HKQuery.predicateForSamples(withStart: Date.distantPast, end: Date(), options: .strictEndDate)
-        
+        //get latest sample – new sample every ca. 5 secs
         //sort to get the latest sample
+        let predicate = HKQuery.predicateForSamples(withStart: Date.distantPast, end: Date(), options: .strictEndDate)
         let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)
         
         //create sample query to retrieve the updated sample
@@ -151,7 +157,7 @@ class HealthManager {
     
     
     func stopHeartRateUpdates () {
-        //TODO: QUERY / QUEUE STOPPEN, Unabhängigkeit von DeviceMotion!
+        
         print("Stoppe Heart Rate")
     }
     

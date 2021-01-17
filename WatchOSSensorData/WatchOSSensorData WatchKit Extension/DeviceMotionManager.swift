@@ -132,9 +132,7 @@ class DeviceMotionManager {
     func stopMotionTracking() {
         if (motionManager.isDeviceMotionActive) {
             motionManager.stopDeviceMotionUpdates()
-            //TODO:
-            //HeartRateData().stopHeartRateUpdates()
-            //TODO: heart rate unabhängig von DeviceMotion stoppen
+            
             if let accessUI = WKExtension.shared().rootInterfaceController as? InterfaceController {
                 accessUI.isTrackingActive = false
                 accessUI.upperLabel.setText("Start again?")
