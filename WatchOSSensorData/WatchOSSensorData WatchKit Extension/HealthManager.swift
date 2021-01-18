@@ -35,7 +35,9 @@ class HealthManager {
     let healthStore = HKHealthStore()
     var dataCounter = 0.0
     var heartRateArray : [HeartRateData] = []
-    var isTrackingActive = false
+    var heartRateObserverQuery: HKQuery?
+    var heartRateSampleQuery: HKQuery?
+    var initialTime = 0.0
     
     
     /*
@@ -46,22 +48,27 @@ class HealthManager {
         
         //check authorization and start
         if (authorizingHK() == true) {
-            
+                        
             //create sample type for heart rate
             guard let heartRateType = HKObjectType.quantityType(forIdentifier: .heartRate) else {
                 print("SampleType ERROR")
                 return
             }
             
-            //set start and end of tracking
+            //set initialTime
+            initialTime = Date().timeIntervalSince1970
+            
+            /* set predicate start and end of tracking
             let startDate = Date()
             let approxObserverTimeError = 3
             let endDate = Calendar.current.date(byAdding: .second, value: Int(timeInSeconds)-approxObserverTimeError, to: startDate)
             let predicate = HKQuery.predicateForSamples(withStart: startDate, end: endDate, options: HKQueryOptions.strictEndDate)
+            */
             
             //create observer which notifies whenever new samples
             //of the specified type are saved to the store by HealthKit
-            let observerQuery = HKObserverQuery(sampleType: heartRateType, predicate: predicate) { (query, completionHandler, errorOrNil) in
+            //new sample every ca. 5 secs
+            heartRateObserverQuery = HKObserverQuery(sampleType: heartRateType, predicate: nil) { (query, completionHandler, errorOrNil) in
                 if (errorOrNil != nil) {
                     print("Observer ERROR")
                     return
@@ -79,31 +86,45 @@ class HealthManager {
                     
                     DispatchQueue.main.async {
                         
-                        //count collected data
-                        self.dataCounter+=1
+                        //stop tracking if time is up
+                        if (Date().timeIntervalSince1970 >= self.initialTime + timeInSeconds) {
+                            //stop tracking and print time is up
+                            print("Time (", String(timeInSeconds), "sec ) is up!")
+                            self.stopHeartRateUpdates()
+                        } else {
+                            //count collected data
+                            self.dataCounter+=1
+                                
+                            //convert HKQuantitySample to a beats-per-minute value
+                            let heartRate = sample.quantity.doubleValue(for: beatsPerMinute)
+                                
+                            //set timestamp of collected data
+                            let d = Date()
+                            let df = DateFormatter()
+                            df.dateFormat = "y-MM-dd H:mm:ss-SS"
+                            let currentDate = df.string(from: d)
+                                
+                            //append current heart rate data to array
+                            self.heartRateArray.append(HeartRateData(
+                                                        timestamp: currentDate,
+                                                        heartRate: heartRate,
+                                                        objNum: self.dataCounter))
+                                
+                            self.encodeAndPost(arr: self.heartRateArray)
                             
-                        //convert HKQuantitySample to a beats-per-minute value
-                        let heartRate = sample.quantity.doubleValue(for: beatsPerMinute)
+                            //set label text in UI
+                            if let accessUI = WKExtension.shared().rootInterfaceController as? InterfaceController {
+                                accessUI.upperLabel.setText("Data fetched: ")
+                                accessUI.lowerLabel.setText(String(self.dataCounter))
+                            }
                             
-                        //set timestamp of collected data
-                        let d = Date()
-                        let df = DateFormatter()
-                        df.dateFormat = "y-MM-dd H:mm:ss-SS"
-                        let currentDate = df.string(from: d)
-                            
-                        //append current heart rate data to array
-                        self.heartRateArray.append(HeartRateData(
-                                                    timestamp: currentDate,
-                                                    heartRate: heartRate,
-                                                    objNum: self.dataCounter))
-                            
-                        self.encodeAndPost(arr: self.heartRateArray)
-                        self.heartRateArray = []
+                            self.heartRateArray = []
+                        }
                     }
                 }
             }
             //execute HKObserverQuery
-            healthStore.execute(observerQuery)
+            healthStore.execute(heartRateObserverQuery!)
         }
     }
 
@@ -123,13 +144,12 @@ class HealthManager {
             return
         }
         
-        //get latest sample – new sample every ca. 5 secs
-        //sort to get the latest sample
+        //get latest sample, sort to get the latest sample
         let predicate = HKQuery.predicateForSamples(withStart: Date.distantPast, end: Date(), options: .strictEndDate)
         let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)
         
         //create sample query to retrieve the updated sample
-        let sampleQuery = HKSampleQuery(sampleType: sampleType,
+        heartRateSampleQuery = HKSampleQuery(sampleType: sampleType,
                                   predicate: predicate,
                                   limit: Int(HKObjectQueryNoLimit),
                                   sortDescriptors: [sortDescriptor]){ (_, results, error) in
@@ -143,7 +163,7 @@ class HealthManager {
         }
         
         //execute HKSampleQuery
-        healthStore.execute(sampleQuery)
+        healthStore.execute(heartRateSampleQuery!)
     }
     
     
@@ -157,10 +177,21 @@ class HealthManager {
     
     
     func stopHeartRateUpdates () {
-        if (isTrackingActive) {
-            //TODO: stop heartrate manually
-            print("Stoppe Heart Rate")
+        healthStore.stop(self.heartRateObserverQuery!)
+        healthStore.stop(self.heartRateSampleQuery!)
+        
+        //set isTrackingActive in InterfaceController to false and adjust UI
+        if let accessUI = WKExtension.shared().rootInterfaceController as? InterfaceController {
+            accessUI.isTrackingActive = false
+            accessUI.upperLabel.setText("Start again?")
+            accessUI.startButton.setBackgroundColor(UIColor.green)
+            accessUI.stopButton.setBackgroundColor(UIColor.lightGray)
         }
+        
+        //reset counter
+        dataCounter = 0
+        
+        //TODO: stop extended runtime session if button isnt pressed!
     }
     
     

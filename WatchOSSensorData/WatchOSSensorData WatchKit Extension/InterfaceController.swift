@@ -44,24 +44,33 @@ class InterfaceController: WKInterfaceController {
             isTrackingActive = true
             extensionDelegate.startExtRunSession()
             //startTracking(timeInSeconds: 5, frequency: 1.0/32.0, sensorType: "deviceMotion")
-            startTracking(timeInSeconds: 90, sensorType: "heartRate")
+            startTracking(timeInSeconds: 20, sensorType: "heartRate")
+            
+            //set UI
+            self.startButton.setBackgroundColor(UIColor.lightGray)
+            self.stopButton.setBackgroundColor(UIColor.red)
         }
     }
  
     @IBAction func stopTrackingButtonPressed() {
         //stop tracking
         if (isTrackingActive == true) {
-            deviceMotionManager.stopMotionTrackingManually()
-            
-            //TODO: Stop HeartRate manually
+            //TODO: only stop the active one
+            deviceMotionManager.stopMotionTracking()
             healthManager.stopHeartRateUpdates()
-
+            print("stopped manually")
+            
             extensionDelegate.stopExtRunSession()
+            
+            //set UI
+            self.startButton.setBackgroundColor(UIColor.green)
+            self.stopButton.setBackgroundColor(UIColor.lightGray)
         }
     }
     
     override func awake(withContext context: Any?) {
         // Configure interface objects here.
+        self.startButton.setBackgroundColor(UIColor.green)
     }
     
     override func willActivate() {

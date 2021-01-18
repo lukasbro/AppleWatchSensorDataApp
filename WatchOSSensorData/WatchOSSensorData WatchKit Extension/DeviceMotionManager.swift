@@ -109,7 +109,7 @@ class DeviceMotionManager {
             //start delivery of DeviceMotion data
             motionManager.startDeviceMotionUpdates(to: OperationQueue.current!, withHandler: handler)
         } else {
-            //if CMMotionManager is not available
+            //else CMMotionManager is not available
             print("CMMotionManager not available")
         }
     }
@@ -124,30 +124,30 @@ class DeviceMotionManager {
             self.jsonString = json
             print(self.jsonString)
         } catch {
-            print("error handling")
+            print("JSON encoder ERROR")
         }
     }
 
     
     func stopMotionTracking() {
+        //first check if DeviceMotion is active
         if (motionManager.isDeviceMotionActive) {
+            
+            //stop motion updates
             motionManager.stopDeviceMotionUpdates()
             
+            //set isTrackingActive in InterfaceController to false and adjust UI
             if let accessUI = WKExtension.shared().rootInterfaceController as? InterfaceController {
                 accessUI.isTrackingActive = false
                 accessUI.upperLabel.setText("Start again?")
+                accessUI.startButton.setBackgroundColor(UIColor.green)
+                accessUI.stopButton.setBackgroundColor(UIColor.lightGray)
             }
+            
+            //reset counter
             dataCounter = 0
-            //TODO: stop ExtendedRuntimeSession?
-            //extensionDelegate.stopExtRunSession()
-        }
-    }
-    
-    
-    func stopMotionTrackingManually() {
-        if (motionManager.isDeviceMotionActive) {
-            stopMotionTracking()
-            print("Manually stopped!")
+            
+            //TODO: stop extended runtime session if button isnt pressed!
         }
     }
 }
