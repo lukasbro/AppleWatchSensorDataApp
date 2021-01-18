@@ -110,6 +110,7 @@ class HealthManager {
                                                         heartRate: heartRate,
                                                         objNum: self.dataCounter))
                                 
+                            //post data
                             self.encodeAndPost(arr: self.heartRateArray)
                             
                             //set label text in UI
@@ -118,6 +119,7 @@ class HealthManager {
                                 accessUI.lowerLabel.setText(String(self.dataCounter))
                             }
                             
+                            //empty array
                             self.heartRateArray = []
                         }
                     }

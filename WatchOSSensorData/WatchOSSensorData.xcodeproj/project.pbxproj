@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D53B3B7225B5B0C100554E61 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D53B3B7025B5B0C100554E61 /* DataModel.xcdatamodeld */; };
+		D53B3B7725B5B0D100554E61 /* DataStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53B3B7625B5B0D100554E61 /* DataStorage.swift */; };
+		D53B3B7D25B5B39900554E61 /* Entity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53B3B7B25B5B39900554E61 /* Entity+CoreDataClass.swift */; };
+		D53B3B7E25B5B39900554E61 /* Entity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53B3B7C25B5B39900554E61 /* Entity+CoreDataProperties.swift */; };
 		D58BAFAC25AB769300E5F1AD /* WatchOSSensorData WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = D58BAFAB25AB769300E5F1AD /* WatchOSSensorData WatchKit App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D58BAFB225AB769300E5F1AD /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D58BAFB025AB769300E5F1AD /* Interface.storyboard */; };
 		D58BAFB425AB769400E5F1AD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D58BAFB325AB769400E5F1AD /* Assets.xcassets */; };
@@ -65,6 +69,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D53B3B7125B5B0C100554E61 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
+		D53B3B7625B5B0D100554E61 /* DataStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStorage.swift; sourceTree = "<group>"; };
+		D53B3B7B25B5B39900554E61 /* Entity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Entity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D53B3B7C25B5B39900554E61 /* Entity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Entity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D58BAFA725AB769300E5F1AD /* WatchOSSensorData.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WatchOSSensorData.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D58BAFAB25AB769300E5F1AD /* WatchOSSensorData WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WatchOSSensorData WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D58BAFB125AB769300E5F1AD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
@@ -135,6 +143,10 @@
 				D58BAFDE25AB8C1B00E5F1AD /* DeviceMotionManager.swift */,
 				D58BAFFC25ABB7BB00E5F1AD /* HealthManager.swift */,
 				D58D13EC25ACBCA6005914B1 /* AppleWatchMotion.swift */,
+				D53B3B7625B5B0D100554E61 /* DataStorage.swift */,
+				D53B3B7025B5B0C100554E61 /* DataModel.xcdatamodeld */,
+				D53B3B7B25B5B39900554E61 /* Entity+CoreDataClass.swift */,
+				D53B3B7C25B5B39900554E61 /* Entity+CoreDataProperties.swift */,
 				D58BAFC725AB769500E5F1AD /* Assets.xcassets */,
 				D58BB00125ABC98500E5F1AD /* WatchOSSensorData WatchKit Extension.entitlements */,
 				D58BAFC925AB769500E5F1AD /* Info.plist */,
@@ -280,11 +292,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				D58D13ED25ACBCA6005914B1 /* AppleWatchMotion.swift in Sources */,
+				D53B3B7225B5B0C100554E61 /* DataModel.xcdatamodeld in Sources */,
 				D58BAFC425AB769400E5F1AD /* NotificationController.swift in Sources */,
+				D53B3B7725B5B0D100554E61 /* DataStorage.swift in Sources */,
+				D53B3B7E25B5B39900554E61 /* Entity+CoreDataProperties.swift in Sources */,
 				D58BAFC625AB769400E5F1AD /* ComplicationController.swift in Sources */,
 				D58BAFFD25ABB7BB00E5F1AD /* HealthManager.swift in Sources */,
 				D58BAFDF25AB8C1B00E5F1AD /* DeviceMotionManager.swift in Sources */,
 				D58BAFC225AB769400E5F1AD /* ExtensionDelegate.swift in Sources */,
+				D53B3B7D25B5B39900554E61 /* Entity+CoreDataClass.swift in Sources */,
 				D58BAFC025AB769400E5F1AD /* InterfaceController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -582,6 +598,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		D53B3B7025B5B0C100554E61 /* DataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				D53B3B7125B5B0C100554E61 /* DataModel.xcdatamodel */,
+			);
+			currentVersion = D53B3B7125B5B0C100554E61 /* DataModel.xcdatamodel */;
+			path = DataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = D58BAFA125AB769200E5F1AD /* Project object */;
 }
